@@ -1,0 +1,301 @@
+@mixin arrow-icon($dir: 'right', $isAbsFix: false, $size: 20rpx, $color: #c9cdd4) {
+  width: $size;
+  height: $size;
+
+  @if $isAbsFix == true {
+    transform: translate(0, -50%) rotate(45deg);
+  }
+
+  @if $isAbsFix == false {
+    transform: rotate(45deg);
+  }
+
+  $border: 4rpx solid $color;
+
+  @if $dir == 'right' {
+    border-top: $border;
+    border-right: $border;
+  }
+
+  @if $dir == 'left' {
+    border-bottom: $border;
+    border-left: $border;
+  }
+
+  @if $dir == 'top' {
+    border-top: $border;
+    border-left: $border;
+  }
+
+  @if $dir == 'bottom' {
+    border-right: $border;
+    border-bottom: $border;
+  }
+}
+
+@mixin line-clamp($height, $line: 2) {
+  @if $line <= 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
+  }
+
+  @if $line > 1 {
+    position: relative;
+    max-height: calc($height * $line);
+    overflow: hidden;
+    line-height: $height;
+    word-break: break-all;
+
+    // 被注释内容不兼容 IOS
+    /* stylelint-disable-next-line order/properties-order */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line; /* 这里是超出几行省略 */
+    // overflow: hidden;
+  }
+}
+
+@mixin close-icon($size: 40rpx, $color: #bbb, $width: 8rpx) {
+  width: $size;
+  height: $size;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: $width;
+    margin-top: -2rpx;
+    content: '';
+    background: $color;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
+@mixin close-circle-icon($size: 40rpx, $color: #bbb, $width: 8rpx) {
+  border-radius: 50%;
+
+  @include close-icon($size, $color, $width);
+
+  &::before,
+  &::after {
+    left: 50%;
+    width: 60%;
+  }
+
+  &::before {
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+  }
+}
+
+@mixin plus-icon($size: 20rpx, $color: #bbb) {
+  position: relative;
+  display: inline-block;
+  width: $size;
+  height: $size;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4rpx;
+    margin-top: -2rpx;
+    content: '';
+    background: $color;
+    transform: translateY(-50%);
+  }
+
+  &::after {
+    transform: translateY(-50%) rotate(-90deg);
+  }
+}
+
+@mixin swipe-animation($distance: 50rpx) {
+  animation-name: swipe;
+  animation-duration: 2700ms;
+  animation-timing-function: linear;
+  animation-delay: 250ms;
+  animation-iteration-count: infinite;
+
+  @keyframes swipe {
+    0% {
+      transform: translateX(0);
+    }
+
+    10% {
+      transform: translateX(-#{$distance});
+    }
+
+    20% {
+      transform: translateX(#{$distance});
+    }
+
+    30% {
+      transform: translateX(-#{$distance});
+    }
+
+    40% {
+      transform: translateX(#{$distance});
+    }
+
+    50% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
+@mixin circle-ripple-animation($size: 300rpx, $bg: #fff, $color: $uni-color-primary) {
+  width: $size;
+  height: $size;
+  background-color: $bg;
+  border-radius: 50%;
+  animation: ripple 0.7s linear infinite;
+
+  @keyframes ripple {
+    0% {
+      box-shadow: 0 0 0 0 rgba($color, 30%), 0 0 0 10px rgba($color, 30%), 0 0 0 30px rgba($color, 30%),
+        0 0 0 50px rgba($color, 30%);
+    }
+
+    100% {
+      box-shadow: 0 0 0 10px rgba($color, 30%), 0 0 0 30px rgba($color, 30%), 0 0 0 50px rgba($color, 30%),
+        0 0 0 80px rgba($color, 0%);
+    }
+  }
+}
+
+@mixin shake-animation($time: 700ms) {
+  animation: shake $time ease-in-out;
+
+  @keyframes shake {
+    /* 水平抖动，核心代码 */
+    10%,
+    90% {
+      transform: translate3d(-2px, 0, 0);
+    }
+
+    20%,
+    80% {
+      transform: translate3d(+2px, 0, 0);
+    }
+
+    30%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+      transform: translate3d(+4px, 0, 0);
+    }
+
+    50% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  }
+}
+
+@mixin custom-radio() {
+  .wx-radio-input {
+    position: relative;
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 12rpx;
+    background-color: #e2e2e2;
+    border-color: #e2e2e2;
+
+    /* 选中后的 对勾样式 （白色对勾 可根据UI需求自己修改） */
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-family: weui;
+      font-size: 36rpx;
+      color: #fff;
+      content: '\EA08';
+      transform: translate(-50%, -48%) scale(0.73);
+    }
+
+    /* 选中后的 背景样式 */
+    &.wx-radio-input-checked {
+      background-color: $uni-color-primary;
+      border-color: $uni-color-primary;
+    }
+  }
+}
+
+@mixin abs-fill-screen() {
+  position: absolute;
+  /* stylelint-disable */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@mixin button($height: 90rpx, $color: $uni-color-primary, $ghost: false) {
+  @if $ghost == true {
+    color: $color;
+    background: rgba(#fff, 0%);
+  }
+
+  @if $ghost == false {
+    color: #fff;
+    background: $color;
+  }
+
+  height: $height;
+  line-height: $height;
+  font-size: 30rpx;
+  border-radius: 4rpx;
+  transition: all 0.2s;
+
+  &::after {
+    border-color: $color;
+  }
+
+  &[disabled] {
+    @if $ghost == true {
+      &::after {
+        border-color: rgba(#000, 20%);
+      }
+    }
+
+    @if $ghost == false {
+      color: #fff;
+      background-color: rgba($color: $uni-color-primary, $alpha: 50%);
+    }
+  }
+
+  &.active {
+    @if $ghost == true {
+      background: rgba($color: $color, $alpha: 10%);
+    }
+
+    @if $ghost == false {
+      background: rgba($color: $color, $alpha: 70%);
+    }
+  }
+}
