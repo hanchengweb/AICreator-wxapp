@@ -1,0 +1,2 @@
+# AICreator-wxapp
+cursor project
